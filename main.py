@@ -22,7 +22,7 @@ from virus_scanner import scan_for_virus
 from scan_ip import list_connected_devices
 from scan_port import list_device_ports
 from run_server import start_http_server_en_hilo, stop_http_server, actualizar_consola_http_server
-from intercept_traffic import sniff_http_packets
+from intercept_traffic import start_interception, stop_interception
 
 # GUI principal
 root = tk.Tk()
@@ -127,7 +127,12 @@ results_text.pack(pady=5)
 # Contenido de la pestaña para iniciar la intercepción de tráfico
 interception_label = ttk.Label(intercept_traffic_tab, text="Manejo de intercepción de tráfico de red", font=("Arial", 16))
 interception_label.pack(pady=10)
-
+start_interception_button = tk.Button(intercept_traffic_tab, text="Iniciar intercepción HTTP", command=lambda: start_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+start_interception_button.pack(pady=10)
+stop_interception_button = tk.Button(intercept_traffic_tab, text="Detener intercepción HTTP", command=lambda: stop_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+stop_interception_button.pack(pady=10)
+intercepcion_result_text = scrolledtext.ScrolledText(intercept_traffic_tab, width=120, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+intercepcion_result_text.pack(pady=5)
 
 
 #Contenido de la pestaña para iniciar el servidor con el fortmulario falso
