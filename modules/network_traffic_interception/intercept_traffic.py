@@ -4,6 +4,15 @@ from scapy.layers.inet import IP
 import threading
 import tkinter as tk
 
+# def process_packet(packet):
+#     if packet.haslayer(HTTPRequest):
+#         print(f"[HTTP] {packet[HTTPRequest].Host.decode()}{packet[HTTPRequest].Path.decode()}")
+#         if packet.haslayer(Raw):
+#             print(f"[DATA] {packet[Raw].load.decode(errors='ignore')}")
+
+# # Capturar tráfico HTTP en la red
+# sniff(filter="tcp port 80", prn=process_packet, store=False)
+
 hilo = None  #Variable global para el hilo
 detener_sniffing = True  #Variable para controlar la detención
 
@@ -23,7 +32,7 @@ def start_interception(interception_entry):
     def sniff_http_packets():
         try:
             sniff(
-                iface="Wi-Fi",
+                iface="eth0",
                 filter="tcp port 80",
                 prn=lambda p: process_packet(p, interception_entry),
                 stop_filter=lambda _: detener_sniffing,
