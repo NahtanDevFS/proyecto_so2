@@ -1,70 +1,53 @@
-from scapy.all import *
+from scapy.all import sniff
 from scapy.layers.http import HTTPRequest
-from scapy.layers.inet import IP
+from scapy.packet import Raw
 import threading
 import tkinter as tk
 
-# def process_packet(packet):
-#     if packet.haslayer(HTTPRequest):
-#         print(f"[HTTP] {packet[HTTPRequest].Host.decode()}{packet[HTTPRequest].Path.decode()}")
-#         if packet.haslayer(Raw):
-#             print(f"[DATA] {packet[Raw].load.decode(errors='ignore')}")
+# Variables globales
+capturing = False
+captured_requests = set()  # Almacenar URLs únicas
 
-# # Capturar tráfico HTTP en la red
-# sniff(filter="tcp port 80", prn=process_packet, store=False)
-
-hilo = None  #Variable global para el hilo
-detener_sniffing = True  #Variable para controlar la detención
-
-def start_interception(interception_entry):
-    global hilo, detener_sniffing
-    
-    if detener_sniffing == False:
-        interception_entry.insert(tk.END, "La intercepción ya está en marcha\n")
-        return
-    
-    detener_sniffing = False  #Reiniciar la bandera de detención
+def start_packet_interception(interception_entry):
+    global capturing
+    capturing = True  # Activamos la captura
+    captured_requests.clear()  # Limpiar historial al iniciar
 
     interception_entry.delete("1.0", tk.END)
-    interception_entry.insert(tk.END, "Escuchando...\n")
+    interception_entry.insert(tk.END, "Escuchando las solicitudes HTTP...\n")
 
-    #La interfaz es Wi-Fi en Windows
-    def sniff_http_packets():
-        try:
-            sniff(
-                iface="eth0",
-                filter="tcp port 80",
-                prn=lambda p: process_packet(p, interception_entry),
-                stop_filter=lambda _: detener_sniffing,
-                store=False,
-                promisc=True
-            )
-        except Exception as e:
-            interception_entry.insert(tk.END, f"Error: {str(e)}\n")
+    def process_packet(packet):
+        global capturing
+        if not capturing:  
+            return  # Detener la captura si se solicitó
+        
+        if packet.haslayer(HTTPRequest):
+            try:
+                url = f"{packet[HTTPRequest].Host.decode()}{packet[HTTPRequest].Path.decode()}"
+                if url not in captured_requests:  # Evita duplicados
+                    captured_requests.add(url)
+                    interception_entry.insert(tk.END, f"[HTTP] {url}\n")
+                    
+                    if packet.haslayer(Raw):
+                        data = packet[Raw].load.decode(errors="ignore")
+                        interception_entry.insert(tk.END, f"[DATA] {data}\n")
+                    
+                    interception_entry.see(tk.END)  # Auto-scroll
 
-    hilo = threading.Thread(target=sniff_http_packets)
-    hilo.daemon = True  #Permite que el hilo se detenga al cerrar la aplicación
-    hilo.start()
+            except Exception as e:
+                interception_entry.insert(tk.END, f"Error procesando paquete: {e}\n")
 
-def process_packet(packet, entry_widget):
-    if packet.haslayer(HTTPRequest):
-        try:
-            src_ip = packet[IP].src
-            dst_ip = packet[IP].dst
-            url = packet[HTTPRequest].Host.decode() + packet[HTTPRequest].Path.decode()
-            
-            output = f"Solicitud HTTP desde {src_ip} a {dst_ip}\nURL: {url}\n"
-            
-            if packet.haslayer(Raw):
-                raw_data = packet[Raw].load
-                output += f"Datos: {raw_data.decode('utf-8', errors='ignore')}\n\n"
-            
-            entry_widget.insert(tk.END, output)
-            entry_widget.see(tk.END)  #Desplazar al final del texto
-        except Exception as e:
-            entry_widget.insert(tk.END, f"Error procesando paquete: {str(e)}\n")
+    # Capturar tráfico HTTP en la red mientras capturing sea True
+    sniff(filter="tcp port 80", prn=process_packet, store=False, stop_filter=lambda x: not capturing)
+
+def start_interception_en_hilo(interception_entry):
+    global capturing
+    if not capturing:  # Evita iniciar múltiples capturas
+        hilo = threading.Thread(target=start_packet_interception, args=(interception_entry,))
+        hilo.daemon = True  # Para que se cierre con la app
+        hilo.start()
 
 def stop_interception(interception_entry):
-    global detener_sniffing
-    detener_sniffing = True  #Activar la bandera de detención
-    interception_entry.insert(tk.END, "Deteniendo la intercepción...\n")
+    global capturing
+    capturing = False  # Se usa en stop_filter para detener sniff()
+    interception_entry.insert(tk.END, "Dejando de escuchar...\n")

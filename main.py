@@ -22,7 +22,8 @@ from virus_scanner import scan_for_virus
 from scan_ip import list_connected_devices
 from scan_port import list_device_ports
 from run_server import start_http_server_en_hilo, stop_http_server, actualizar_consola_http_server
-from intercept_traffic import start_interception, stop_interception
+from intercept_traffic import start_interception_en_hilo, stop_interception
+from start_ettercap import start_ettercap_en_hilo, stop_ettercap_en_hilo
 
 # GUI principal
 root = tk.Tk()
@@ -127,7 +128,12 @@ results_text.pack(pady=5)
 # Contenido de la pestaña para iniciar la intercepción de tráfico
 interception_label = ttk.Label(intercept_traffic_tab, text="Manejo de intercepción de tráfico de red", font=("Arial", 16))
 interception_label.pack(pady=10)
-start_interception_button = tk.Button(intercept_traffic_tab, text="Iniciar intercepción HTTP", command=lambda: start_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+start_ettercap_button = tk.Button(intercept_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+start_ettercap_button.pack(pady=10)
+stop_ettercap_button = tk.Button(intercept_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+stop_ettercap_button.pack(pady=10)
+
+start_interception_button = tk.Button(intercept_traffic_tab, text="Iniciar intercepción HTTP", command=lambda: start_interception_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
 start_interception_button.pack(pady=10)
 stop_interception_button = tk.Button(intercept_traffic_tab, text="Detener intercepción HTTP", command=lambda: stop_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
 stop_interception_button.pack(pady=10)
