@@ -10,6 +10,7 @@ modules = [
     "modules/scanning_device_ports",
     "modules/fake_form_server",
     "modules/network_traffic_interception",
+    "modules/network_traffic_modification"
 ]
 
 for module in modules:
@@ -24,6 +25,7 @@ from scan_port import list_device_ports
 from run_server import start_http_server_en_hilo, stop_http_server, actualizar_consola_http_server
 from intercept_traffic import start_interception_en_hilo, stop_interception
 from start_ettercap import start_ettercap_en_hilo, stop_ettercap_en_hilo
+from run_redirection import ejecutar_mitmdump, parar_mitmdump
 
 # GUI principal
 root = tk.Tk()
@@ -141,7 +143,20 @@ intercepcion_result_text = scrolledtext.ScrolledText(intercept_traffic_tab, widt
 intercepcion_result_text.pack(pady=5)
 
 
-#Contenido de la pestaña para iniciar el servidor con el fortmulario falso
+
+#Contenido de la pestaña para iniciar la redirección
+mitmdump_label = ttk.Label(modify_traffic_tab, text="Manejo de redirección de tráfico HTTP con mitmdump", font=("Arial", 16))
+mitmdump_label.pack(pady=10)
+start_mitmdump_button = tk.Button(modify_traffic_tab, text="Iniciar mitmdump", command=lambda: ejecutar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+start_mitmdump_button.pack(pady=10)
+start_mitmdump_button = tk.Button(modify_traffic_tab, text="Parar mitmdump", command=lambda: parar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+start_mitmdump_button.pack(pady=10)
+mitmdump_result_text = scrolledtext.ScrolledText(modify_traffic_tab, width=100, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+mitmdump_result_text.pack(pady=5)
+
+
+
+#Contenido de la pestaña para iniciar el servidor con el formulario falso
 interception_label = ttk.Label(start_fake_form_server, text="Manejo del servidor http", font=("Arial", 16))
 interception_label.pack(pady=10)
 start_http_server_button = tk.Button(start_fake_form_server, text="Iniciar http server", command=lambda: start_http_server_en_hilo(http_server_result_text), width=30, bg="#303030", fg="#03bf00")

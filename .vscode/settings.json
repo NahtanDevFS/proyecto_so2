@@ -5,6 +5,7 @@
         "./modules/scanning_devices_ip",
         "./modules/scanning_device_ports",
         "./modules/fake_form_server",
-        "./modules/network_traffic_interception"
+        "./modules/network_traffic_interception",
+        "./modules/network_traffic_modification"
     ]
 }
