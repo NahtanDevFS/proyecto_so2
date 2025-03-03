@@ -50,6 +50,7 @@ scan_tab = ttk.Frame(notebook, style="TFrame")
 intercept_traffic_tab = ttk.Frame(notebook, style="TFrame")
 modify_traffic_tab = ttk.Frame(notebook, style="TFrame")
 start_fake_form_server = ttk.Frame(notebook, style="TFrame")
+DoS_tab = ttk.Frame(notebook, style="TFrame")
 # Pestañas extra
 pass_generator_tab = ttk.Frame(notebook, style="TFrame")
 scan_virus_tab = ttk.Frame(notebook, style="TFrame")
@@ -60,6 +61,7 @@ notebook.add(scan_tab, text="Escanear Puertos")
 notebook.add(intercept_traffic_tab, text="Iniciar intercepcion")
 notebook.add(modify_traffic_tab, text="Iniciar redireccion")
 notebook.add(start_fake_form_server, text="Iniciar server")
+notebook.add(DoS_tab, text="Iniciar ataque DoS")
 notebook.add(pass_generator_tab, text="Gen clave")
 notebook.add(scan_virus_tab, text="Escanear archivo")
 
@@ -81,6 +83,10 @@ mitmdump_button.pack(pady=10)
 
 intercept_data_button = tk.Button(home_tab, text="Iniciar servidor de fake-form", command=lambda: notebook.select(start_fake_form_server), width=40, bg="#303030", fg="#03bf00")
 intercept_data_button.pack(pady=10)
+
+DoS_button = tk.Button(home_tab, text="Iniciar ataque DoS", command=lambda: notebook.select(DoS_tab), width=40, bg="#303030", fg="#03bf00")
+DoS_button.pack(pady=10)
+
 
 extras_label = ttk.Label(home_tab, text="Extras", font=("Arial", 16))
 extras_label.pack(pady=20)
@@ -168,6 +174,13 @@ http_server_result_text.pack(pady=5)
 
 start_interception_button = tk.Button(start_fake_form_server, text="Actualizar consola", command=lambda: actualizar_consola_http_server(http_server_result_text), width=30, bg="#303030", fg="#03bf00")
 start_interception_button.pack(pady=10)
+
+
+
+#Contenido de la pestaña para iniciar el ataque DoS
+DoS_label = ttk.Label(DoS_tab, text="Manejo de ataque DoS", font=("Arial", 16))
+DoS_label.pack(pady=10)
+
 
 
 
