@@ -7,7 +7,6 @@ from tkinter import messagebox
 evento_stop = threading.Event()
 
 def validar_ip(ip):
-    #Verifica si una IP tiene un formato válido. Retorna True si es válida, False si no.
     try:
         socket.inet_aton(ip)  # Verifica que la IP tenga el formato correcto
         return True
@@ -31,7 +30,6 @@ def ejecutar_ataque_dos(ataque_dos_entry, target_ip_entry, fake_ip_entry):
         messagebox.showerror("Error", "La IP del objetivo no es válida o no se encuentra.")
         return
 
-    # Validar si la IP falsa es correcta
     if not validar_ip(fake_ip):
         messagebox.showerror("Error", "La IP falsa ingresada no es válida.")
         return
@@ -53,7 +51,6 @@ def ejecutar_ataque_dos(ataque_dos_entry, target_ip_entry, fake_ip_entry):
             thread = threading.Thread(target=attack)
             thread.start()
 
-        # Crear y ejecutar un hilo para no bloquear la interfaz
     ataque_dos_entry.delete("1.0", tk.END)  # Limpiar el área de resultados
     ataque_dos_entry.insert(tk.END, "El ataque DoS ha sido iniciado.\n")
     hilo = threading.Thread(target=ataque_dos)
