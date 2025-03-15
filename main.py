@@ -10,7 +10,8 @@ modules = [
     "modules/scanning_device_ports",
     "modules/fake_form_server",
     "modules/network_traffic_interception",
-    "modules/network_traffic_modification"
+    "modules/network_traffic_modification",
+    "modules/denial_service_attack"
 ]
 
 for module in modules:
@@ -26,6 +27,7 @@ from run_server import start_http_server_en_hilo, stop_http_server, actualizar_c
 from intercept_traffic import start_interception_en_hilo, stop_interception
 from start_ettercap import start_ettercap_en_hilo, stop_ettercap_en_hilo
 from run_redirection import ejecutar_mitmdump, parar_mitmdump
+from dos_attack import ejecutar_ataque_dos, parar_ataque_dos
 
 # GUI principal
 root = tk.Tk()
@@ -171,15 +173,29 @@ stop_http_server_button = tk.Button(start_fake_form_server, text="detener http s
 stop_http_server_button.pack(pady=10)
 http_server_result_text = scrolledtext.ScrolledText(start_fake_form_server, width=120, height=12, bg="#303030", fg="#03bf00", insertbackground="white")
 http_server_result_text.pack(pady=5)
-
 start_interception_button = tk.Button(start_fake_form_server, text="Actualizar consola", command=lambda: actualizar_consola_http_server(http_server_result_text), width=30, bg="#303030", fg="#03bf00")
 start_interception_button.pack(pady=10)
+
 
 
 
 #Contenido de la pestaña para iniciar el ataque DoS
 DoS_label = ttk.Label(DoS_tab, text="Manejo de ataque DoS", font=("Arial", 16))
 DoS_label.pack(pady=10)
+DoS_ip_label = ttk.Label(DoS_tab, text="Dirección IP del objetivo:")
+DoS_ip_label.pack(pady=5)
+DoS_ip_entry = tk.Entry(DoS_tab, width=50, bg="#303030", fg="#03bf00")
+DoS_ip_entry.pack(pady=5)
+DoS_fake_ip_label = ttk.Label(DoS_tab, text="Dirección IP falsa para encubrimiento del ataque:")
+DoS_fake_ip_label.pack(pady=5)
+DoS_fake_ip_entry = tk.Entry(DoS_tab, width=50, bg="#303030", fg="#03bf00")
+DoS_fake_ip_entry.pack(pady=5)
+start_DoS_attack_button = tk.Button(DoS_tab, text="Iniciar ataque DoS", command=lambda: ejecutar_ataque_dos(DoS_attack_result_text, DoS_ip_entry, DoS_fake_ip_entry), width=30, bg="#303030", fg="#03bf00")
+start_DoS_attack_button.pack(pady=10)
+start_DoS_attack_button = tk.Button(DoS_tab, text="Parar ataque DoS", command=lambda: parar_ataque_dos(DoS_attack_result_text), width=30, bg="#303030", fg="#03bf00")
+start_DoS_attack_button.pack(pady=10)
+DoS_attack_result_text = scrolledtext.ScrolledText(DoS_tab, width=120, height=12, bg="#303030", fg="#03bf00", insertbackground="white")
+DoS_attack_result_text.pack(pady=5)
 
 
 
