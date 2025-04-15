@@ -136,25 +136,71 @@ results_text.pack(pady=5)
 
 
 # Contenido de la pestaña para iniciar la intercepción de tráfico
-interception_label = ttk.Label(intercept_traffic_tab, text="Manejo de intercepción de tráfico de red", font=("Arial", 16))
+interception_label = ttk.Label(intercept_traffic_tab, 
+                               text="Manejo de intercepción de tráfico de red", 
+                               font=("Arial", 16))
 interception_label.pack(pady=10)
-start_ettercap_button = tk.Button(intercept_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
-start_ettercap_button.pack(pady=10)
-stop_ettercap_button = tk.Button(intercept_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
-stop_ettercap_button.pack(pady=10)
 
-start_interception_button = tk.Button(intercept_traffic_tab, text="Iniciar intercepción HTTP", command=lambda: start_interception_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
-start_interception_button.pack(pady=10)
-stop_interception_button = tk.Button(intercept_traffic_tab, text="Detener intercepción HTTP", command=lambda: stop_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
-stop_interception_button.pack(pady=10)
-intercepcion_result_text = scrolledtext.ScrolledText(intercept_traffic_tab, width=120, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+# Crear un frame para contener los botones
+button_frame = tk.Frame(intercept_traffic_tab, bg="black")
+button_frame.pack(pady=10)
+
+# Botones para la primera columna
+start_ettercap_button = tk.Button(button_frame, 
+                                  text="Iniciar Ettercap", 
+                                  command=lambda: start_ettercap_en_hilo(intercepcion_result_text), 
+                                  width=30, bg="#303030", fg="#03bf00")
+start_ettercap_button.grid(row=0, column=0, padx=5, pady=10)
+
+stop_ettercap_button = tk.Button(button_frame, 
+                                 text="Detener Ettercap", 
+                                 command=lambda: stop_ettercap_en_hilo(intercepcion_result_text), 
+                                 width=30, bg="#303030", fg="#03bf00")
+stop_ettercap_button.grid(row=1, column=0, padx=5, pady=10)
+
+# Botones para la segunda columna
+start_interception_button = tk.Button(button_frame, 
+                                      text="Iniciar intercepción HTTP", 
+                                      command=lambda: start_interception_en_hilo(intercepcion_result_text), 
+                                      width=30, bg="#303030", fg="#03bf00")
+start_interception_button.grid(row=0, column=1, padx=5, pady=10)
+
+stop_interception_button = tk.Button(button_frame, 
+                                     text="Detener intercepción HTTP", 
+                                     command=lambda: stop_interception(intercepcion_result_text), 
+                                     width=30, bg="#303030", fg="#03bf00")
+stop_interception_button.grid(row=1, column=1, padx=5, pady=10)
+
+# Área de texto con scroll para mostrar resultados
+intercepcion_result_text = scrolledtext.ScrolledText(intercept_traffic_tab, 
+                                                      width=120, height=20, 
+                                                      bg="#303030", fg="#03bf00", 
+                                                      insertbackground="white")
 intercepcion_result_text.pack(pady=5)
+# interception_label = ttk.Label(intercept_traffic_tab, text="Manejo de intercepción de tráfico de red", font=("Arial", 16))
+# interception_label.pack(pady=10)
+# start_ettercap_button = tk.Button(intercept_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+# start_ettercap_button.pack(pady=10)
+# stop_ettercap_button = tk.Button(intercept_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+# stop_ettercap_button.pack(pady=10)
+
+# start_interception_button = tk.Button(intercept_traffic_tab, text="Iniciar intercepción HTTP", command=lambda: start_interception_en_hilo(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+# start_interception_button.pack(pady=10)
+# stop_interception_button = tk.Button(intercept_traffic_tab, text="Detener intercepción HTTP", command=lambda: stop_interception(intercepcion_result_text), width=30, bg="#303030", fg="#03bf00")
+# stop_interception_button.pack(pady=10)
+# intercepcion_result_text = scrolledtext.ScrolledText(intercept_traffic_tab, width=120, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+# intercepcion_result_text.pack(pady=5)
 
 
 
 #Contenido de la pestaña para iniciar la redirección
 mitmdump_label = ttk.Label(modify_traffic_tab, text="Manejo de redirección de tráfico HTTP con mitmdump", font=("Arial", 16))
 mitmdump_label.pack(pady=10)
+start_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+start_ettercap_redireccion_button.pack(pady=10)
+stop_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+stop_ettercap_redireccion_button.pack(pady=10)
+
 start_mitmdump_button = tk.Button(modify_traffic_tab, text="Iniciar mitmdump", command=lambda: ejecutar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
 start_mitmdump_button.pack(pady=10)
 start_mitmdump_button = tk.Button(modify_traffic_tab, text="Parar mitmdump", command=lambda: parar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
