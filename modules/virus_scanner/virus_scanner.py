@@ -36,7 +36,7 @@ def scan_for_virus(file_path_entry, scanning_entry):
             elif positives > 0 and positives < 10:
                 scanning_entry.insert(tk.END, f"Archivo posiblemente malicioso, tiene {positives} positivos de {total} antivirus.\n")
             else:
-                scanning_entry.insert(tk.END, "Archivo seguro.\n")
+                scanning_entry.insert(tk.END, f"Archivo seguro, tiene {positives} positivos de {total} antivirus.\n")
         else:
             scanning_entry.insert(tk.END, "El archivo no está en la base de datos de virusTotal. Subiendo para su análisis...\n")
             scanning_entry.see(tk.END)  #Desplaza el texto automáticamente hacia abajo

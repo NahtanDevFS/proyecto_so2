@@ -194,19 +194,63 @@ intercepcion_result_text.pack(pady=5)
 
 
 #Contenido de la pestaña para iniciar la redirección
-mitmdump_label = ttk.Label(modify_traffic_tab, text="Manejo de redirección de tráfico HTTP con mitmdump", font=("Arial", 16))
+# Etiqueta principal en la pestaña
+mitmdump_label = ttk.Label(modify_traffic_tab, 
+                            text="Manejo de redirección de tráfico HTTP con mitmdump", 
+                            font=("Arial", 16))
 mitmdump_label.pack(pady=10)
-start_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
-start_ettercap_redireccion_button.pack(pady=10)
-stop_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
-stop_ettercap_redireccion_button.pack(pady=10)
 
-start_mitmdump_button = tk.Button(modify_traffic_tab, text="Iniciar mitmdump", command=lambda: ejecutar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
-start_mitmdump_button.pack(pady=10)
-start_mitmdump_button = tk.Button(modify_traffic_tab, text="Parar mitmdump", command=lambda: parar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
-start_mitmdump_button.pack(pady=10)
-mitmdump_result_text = scrolledtext.ScrolledText(modify_traffic_tab, width=100, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+# Crear un frame para contener los botones
+button_frame = tk.Frame(modify_traffic_tab, bg="black")
+button_frame.pack(pady=10)
+
+# Botones para la primera columna
+start_ettercap_redireccion_button = tk.Button(button_frame, 
+                                              text="Iniciar Ettercap", 
+                                              command=lambda: start_ettercap_en_hilo(mitmdump_result_text), 
+                                              width=30, bg="#303030", fg="#03bf00")
+start_ettercap_redireccion_button.grid(row=0, column=0, padx=5, pady=10)
+
+stop_ettercap_redireccion_button = tk.Button(button_frame, 
+                                             text="Detener Ettercap", 
+                                             command=lambda: stop_ettercap_en_hilo(mitmdump_result_text), 
+                                             width=30, bg="#303030", fg="#03bf00")
+stop_ettercap_redireccion_button.grid(row=1, column=0, padx=5, pady=10)
+
+# Botones para la segunda columna
+start_mitmdump_button = tk.Button(button_frame, 
+                                  text="Iniciar mitmdump", 
+                                  command=lambda: ejecutar_mitmdump(mitmdump_result_text), 
+                                  width=30, bg="#303030", fg="#03bf00")
+start_mitmdump_button.grid(row=0, column=1, padx=5, pady=10)
+
+# Es importante usar otro identificador para el botón de "Parar mitmdump"
+stop_mitmdump_button = tk.Button(button_frame, 
+                                 text="Detener mitmdump", 
+                                 command=lambda: parar_mitmdump(mitmdump_result_text), 
+                                 width=30, bg="#303030", fg="#03bf00")
+stop_mitmdump_button.grid(row=1, column=1, padx=5, pady=10)
+
+# Área de texto con scroll para mostrar resultados
+mitmdump_result_text = scrolledtext.ScrolledText(modify_traffic_tab, 
+                                                  width=100, height=20, 
+                                                  bg="#303030", fg="#03bf00", 
+                                                  insertbackground="white")
 mitmdump_result_text.pack(pady=5)
+
+# mitmdump_label = ttk.Label(modify_traffic_tab, text="Manejo de redirección de tráfico HTTP con mitmdump", font=("Arial", 16))
+# mitmdump_label.pack(pady=10)
+# start_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Iniciar Ettercap", command=lambda: start_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+# start_ettercap_redireccion_button.pack(pady=10)
+# stop_ettercap_redireccion_button = tk.Button(modify_traffic_tab, text="Detener Ettercap", command=lambda: stop_ettercap_en_hilo(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+# stop_ettercap_redireccion_button.pack(pady=10)
+
+# start_mitmdump_button = tk.Button(modify_traffic_tab, text="Iniciar mitmdump", command=lambda: ejecutar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+# start_mitmdump_button.pack(pady=10)
+# start_mitmdump_button = tk.Button(modify_traffic_tab, text="Parar mitmdump", command=lambda: parar_mitmdump(mitmdump_result_text), width=30, bg="#303030", fg="#03bf00")
+# start_mitmdump_button.pack(pady=10)
+# mitmdump_result_text = scrolledtext.ScrolledText(modify_traffic_tab, width=100, height=20, bg="#303030", fg="#03bf00", insertbackground="white")
+# mitmdump_result_text.pack(pady=5)
 
 
 

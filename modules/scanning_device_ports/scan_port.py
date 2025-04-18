@@ -2,33 +2,43 @@ import nmap
 import tkinter as tk
 
 def list_device_ports(ip_entry, ports_entry, results_text):
-    target = ip_entry.get()  #Obtener la IP o el rango de red del campo de entrada
-    ports = ports_entry.get()  #btener los puertos a escanear
-    results_text.delete("1.0", tk.END)  #Limpiar el área de resultados
+    target = ip_entry.get()
+    ports = ports_entry.get() or "1-1024"
 
+    results_text.delete("1.0", tk.END)
     if not target:
         results_text.insert(tk.END, "Por favor, introduce una dirección IP o un rango de red.\n")
         return
 
-    if not ports:
-        ports = "1-1024"  #Escanear puertos comunes si no se especifica
-
     results_text.insert(tk.END, f"Escaneando {target} en los puertos {ports}...\n")
-    results_text.see(tk.END)  #Desplaza el texto automáticamente hacia abajo
-    results_text.update()  #Fuerza la actualización de la interfaz
+    results_text.see(tk.END)
+    results_text.update()
+
     try:
         nm = nmap.PortScanner()
         nm.scan(target, ports)
-        for host in nm.all_hosts():
+
+        # —————— Nuevo bloque: comprueba si no encontró hosts ——————
+        hosts = nm.all_hosts()
+        if not hosts:
+            results_text.insert(tk.END, f"No se encontró ningún host en {target}.\n")
+            return
+        # ————————————————————————————————————————————————
+
+        for host in hosts:
             results_text.insert(tk.END, f"\nHost: {host} ({nm[host].hostname()})\n")
             results_text.insert(tk.END, f"Estado: {nm[host].state()}\n")
             for protocol in nm[host].all_protocols():
                 results_text.insert(tk.END, f"Protocolo: {protocol}\n")
-                ports = nm[host][protocol].keys()
-                for port in ports:
+                for port in nm[host][protocol].keys():
                     state = nm[host][protocol][port]['state']
                     results_text.insert(tk.END, f"  Puerto: {port}\tEstado: {state}\n")
+
     except nmap.PortScannerError as nse:
-        results_text.insert(tk.END, f"Error al realizar el escaneo con nmap: {nse}\n")
+        # Si el error es “Failed to resolve”, significa que la IP no fue encontrada:
+        if "Failed to resolve" in str(nse):
+            results_text.insert(tk.END, f"No se pudo resolver la dirección: {target}\n")
+        else:
+            results_text.insert(tk.END, f"Error al realizar el escaneo con nmap: {nse}\n")
     except Exception as e:
         results_text.insert(tk.END, f"Error inesperado: {e}\n")

