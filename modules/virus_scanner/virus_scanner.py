@@ -70,7 +70,7 @@ def upload_and_analyze(file_path, scanning_entry):
                     elif positives > 0 and positives < 10:
                         scanning_entry.insert(tk.END, f"Archivo posiblemente malicioso, tiene {positives} positivos de {total} antivirus.\n")
                     else:
-                        scanning_entry.insert(tk.END, "Archivo seguro.\n")
+                        scanning_entry.insert(tk.END, f"Archivo seguro, tiene {positives} positivos de {total} antivirus.\n")
                     return
                 else:
                     scanning_entry.insert(tk.END, "Esperando resultados del análisis...\n")
