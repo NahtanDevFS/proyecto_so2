@@ -31,7 +31,7 @@ from dos_attack import ejecutar_ataque_dos, parar_ataque_dos
 
 # GUI principal
 root = tk.Tk()
-root.title("Herramienta de vulneración de sistemas")
+root.title("Herramienta de aprovechamiento de vulnerabilidades en sistemas")
 root.geometry("1200x600")
 root.configure(bg="black")  # Cambiar el fondo a negro
 
@@ -68,7 +68,7 @@ notebook.add(pass_generator_tab, text="Gen clave")
 notebook.add(scan_virus_tab, text="Escanear archivo")
 
 # Contenido de la pestaña Inicio
-home_label = ttk.Label(home_tab, text="Bienvenido a tu aplicación de vulneración", font=("Arial", 16))
+home_label = ttk.Label(home_tab, text="Aplicación de aprovechamiento de vulnerabilidades en los sistemas", font=("Arial", 15))
 home_label.pack(pady=20)
 
 devices_button = tk.Button(home_tab, text="Escanear Red", command=lambda: notebook.select(devices_tab), width=40, bg="#303030", fg="#03bf00")

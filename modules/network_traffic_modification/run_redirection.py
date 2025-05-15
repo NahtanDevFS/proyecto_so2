@@ -4,9 +4,7 @@ from tkinter import messagebox
 import threading
 
 def liberar_puerto(puerto):
-    """
-    Verifica si hay un proceso en el puerto dado y lo termina.
-    """
+    #Verifica si hay un proceso en el puerto dado y lo termina.
     try:
         # Buscar procesos en el puerto
         comando_buscar = ["lsof", "-t", f"-i:{puerto}"]
@@ -57,9 +55,9 @@ def ejecutar_mitmdump(mitmdump_entry):
         except Exception as e:
             messagebox.showerror("Error", f"Se produjo un error: {e}")
 
-    # Crear y ejecutar un hilo para no bloquear la interfaz
+    # Crea y ejecuta un hilo para no bloquear la interfaz
     hilo = threading.Thread(target=proceso_mitmdump)
-    hilo.daemon = True  # Asegura que el hilo termine al cerrar la aplicación
+    hilo.daemon = True  # Se asegura que el hilo termine al cerrar la aplicación
     hilo.start()
 
 def parar_mitmdump(mitmdump_entry):

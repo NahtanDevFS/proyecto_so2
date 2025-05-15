@@ -18,12 +18,11 @@ def list_device_ports(ip_entry, ports_entry, results_text):
         nm = nmap.PortScanner()
         nm.scan(target, ports)
 
-        # —————— Nuevo bloque: comprueba si no encontró hosts ——————
+        # Nuevo bloque: comprueba si no encontró hosts
         hosts = nm.all_hosts()
         if not hosts:
             results_text.insert(tk.END, f"No se encontró ningún host en {target}.\n")
             return
-        # ————————————————————————————————————————————————
 
         for host in hosts:
             results_text.insert(tk.END, f"\nHost: {host} ({nm[host].hostname()})\n")
