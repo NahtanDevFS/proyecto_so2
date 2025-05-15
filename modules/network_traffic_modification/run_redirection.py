@@ -7,13 +7,14 @@ def liberar_puerto(puerto):
     #Verifica si hay un proceso en el puerto dado y lo termina.
     try:
         # Buscar procesos en el puerto
+        #lsof: Lista archivos abiertos, -t: Muestra solo los IDs de proceso (PIDs), -i:[puerto]: Filtra procesos usando el puerto TCP especificado
         comando_buscar = ["lsof", "-t", f"-i:{puerto}"]
         procesos = subprocess.check_output(comando_buscar, text=True).strip().split("\n")
         
         if procesos:
             for pid in procesos:
                 if pid:  # Asegurar que el PID no está vacío
-                    # Terminar el proceso
+                    # Terminar el proceso, kill: Envía una señal a un proceso, -9: Señal SIGKILL (terminación forzosa e inmediata)
                     subprocess.run(["kill", "-9", pid])
                     print(f"Proceso {pid} en el puerto {puerto} terminado.")
     except subprocess.CalledProcessError:
@@ -22,9 +23,9 @@ def liberar_puerto(puerto):
 
 
 def ejecutar_mitmdump(mitmdump_entry):
-    """
-    Ejecuta el comando mitmdump con el script redirect_URL.py en un hilo separado.
-    """
+    
+    # Ejecuta el comando mitmdump con el script redirect_URL.py en un hilo separado.
+    
     def proceso_mitmdump():
         try:
 
@@ -33,7 +34,7 @@ def ejecutar_mitmdump(mitmdump_entry):
             # Liberar el puerto antes de ejecutar mitmdump
             liberar_puerto(puerto)
 
-            # Ruta completa al comando mitmdump
+            # Ruta completa al comando mitmdump, s: Ejecuta un script Python personalizado
             comando = ["/home/jonathan/myenv/bin/mitmdump", "-s", "/home/jonathan/Desktop/proyecto_so2/modules/network_traffic_modification/redirect_traffic.py"]
             
             # Inicia el proceso

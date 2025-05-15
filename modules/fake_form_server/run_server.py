@@ -110,7 +110,7 @@ def start_http_server_en_hilo(server_entry):
 
         server_entry.insert(tk.END, f"Servidor corriendo en http://{local_ipv4}:{9000}.\n")
 
-        httpd.timeout = 1  # Configura un tiempo de espera de 1 seg para las conexiones
+        httpd.timeout = 10  # tiempo máximo en segs que el servidor esperará una solicitud http
         httpd.serve_forever()
 
 
